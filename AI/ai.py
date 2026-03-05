@@ -24,3 +24,4 @@ async def photo_generation(prompt: str) -> str:
     r.raise_for_status()
     data = r.json()
     return data["files"][0]["url"]
+
