@@ -27,5 +27,19 @@ Rasm chizilmoqda
 """
 
 free_image_mes = """
-{}
+✅ Rasm tayyor
+📌 Prompt: <b>{}</b>
+
+🔁 <i>Yana chizish uchun prompt yuboring</i>
+"""
+
+saved_images_mes = """
+<b>📌{}
+
+Rasm qanchaga chizilgan:💰</b> {}so'm
+Saqlanganlar📂: {}/{}
+"""
+
+not_saved_mes = """
+<b>Sizda hali saqlangan rasmlar yo'q🚫</b>
 """
