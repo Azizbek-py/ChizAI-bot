@@ -1,14 +1,10 @@
-import os
 import io
 import base64
 import requests
 
 from huggingface_hub import InferenceClient
-from dotenv import load_dotenv
 from groq import Groq
 from settings import GROQ_TOKEN, HF_TOKEN
-
-load_dotenv()
 
 HF_MODEL = "stabilityai/stable-diffusion-xl-base-1.0"
 
@@ -44,13 +40,13 @@ def describe_photo(filename: str, prompt: str) -> dict:
     with open(filename, "rb") as image_file:
         base64_image = base64.b64encode(image_file.read()).decode("utf-8")
 
-    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    client = Groq(api_key=GROQ_TOKEN)
 
     completion = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "Sen rasmni boshqa Rasm generatsiya qiladigan API uchun tahlil qilib beradigan agentsan. Rasm xar bitta pikseligacha tahlil qilinishi kerak va mukammal prompt ko'rinishida bo'lishi kerak. Qo'shimcha prompt va rasmni to'g'ri bir-birga qo'shib prompt hozili qilib qaytar chunki rasmlarda insonlarning yuzi ham qatnashadi hattoki. SHuning uchun batafsil va tushunarli yoz"
+            "content": "Sen rasmni boshqa Rasm generatsiya qiladigan API uchun tahlil qilib kuchli prompt yozib berishing kerak."
         },
         {
             "role": "user",

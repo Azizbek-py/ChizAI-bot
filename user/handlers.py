@@ -7,8 +7,8 @@ from database.db import *
 from .buttons import *
 from .messages import *
 from settings import *
-from AI.ai import generate_photo, describe_photo
-# from AI.agent import *
+# from AI.ai1 import generate_from_text, generate_from_image
+from AI.ai import describe_photo, generate_photo
 import asyncio
 import re
 from contextlib import suppress
@@ -317,12 +317,11 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             result = describe_photo(
-                filename=file_path,
+                path=file_path,
                 prompt=template.get("prompt")
             )
 
-            await update.message.reply_photo(photo=generate_photo(prompt=result['text']))
-            print(result['text'])
+            # await update.message.reply_photo(photo=open(result, "rb"))
         finally:
             if os.path.exists(file_path):
                 os.remove(file_path)

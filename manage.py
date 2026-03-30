@@ -8,7 +8,7 @@ from telegram.ext import (
     filters
 )
 from settings import BOT_TOKEN
-from common.dispatch import start, text, button, photo
+from common.dispatch import *
 
 app = Application.builder().token(BOT_TOKEN).build()
 
