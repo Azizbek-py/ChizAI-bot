@@ -43,3 +43,21 @@ Saqlanganlar📂: {}/{}
 not_saved_mes = """
 <b>Sizda hali saqlangan rasmlar yo'q🚫</b>
 """
+
+template_mes = """
+<b>Pullik shablonlar⤵️</b>
+
+Nomi: <b>{}</b>
+Narxi: <b>{}so'm</b>💸
+
+{}/{}
+<b>{}</b>🤖
+"""
+
+enough_balance_mes = """
+<b>Yaxshi, shablondan foydalanish uchun rasm yuboring!</b>
+"""
+
+not_enough_mes = """
+Sizning balansingizda mablag' yetarli emas❌
+"""

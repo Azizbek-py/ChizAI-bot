@@ -18,3 +18,9 @@ saved_images_but = [
     [InlineKeyboardButton("⏮️", callback_data="prev_saved"), InlineKeyboardButton("⏭️", callback_data="next_saved")],
     [InlineKeyboardButton("O'chirish🗑", callback_data="delete"), InlineKeyboardButton("Ortga🔙", callback_data="back")]
 ]
+
+template_but = [
+    [InlineKeyboardButton("Foydalanish🔆", callback_data="use")],
+    [InlineKeyboardButton("⏮️", callback_data="prev_template"), InlineKeyboardButton("⏭️", callback_data="next_template")],
+    [InlineKeyboardButton("Ortga🔙", callback_data="back")]
+]
