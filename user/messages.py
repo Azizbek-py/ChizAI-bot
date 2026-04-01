@@ -1,63 +1,101 @@
 start_mes = """
-<b>🎨 ChizAI BOTga xush kelibsiz!</b>
+<b>✨ ChizAI Botga xush kelibsiz!</b>
 
-Men sun’iy intellekt yordamida rasm yarataman 🤖✨
+Sun’iy intellekt yordamida siz tasavvur qilgan har qanday rasmni yarataman 🤖🎨
 
-<b>Qanday ishlaydi?</b>
-1️⃣ Menga rasm tasvirini yozing  
-2️⃣ Bir necha soniya kuting  
-3️⃣ Tayyor rasmni oling 📸  
+<b>🚀 Qanday ishlaydi?</b>
+• 📝 Rasm tasvirini yozing (prompt)  
+• ⚡ Bir necha soniya kuting  
+• 🖼 Tayyor natijani oling  
 
-Boshlash uchun kerakli bo'limni tanlang 👇
+<i>Oddiy matndan san’at yarating!</i>
+
+👇 Boshlash uchun menyudan tanlang
 """
+
 
 create_photo_mes = """
-Rasm yaratish bo'limidasiz
+<b>🎨 Rasm yaratish</b>
 
-<b>Prompt yozing misol:</b>
+Prompt yozing 👇
+
 <code>Kelajak shahri, neon chiroqlar, cyberpunk uslubida</code>
+
+<i>Qanchalik aniq yozsangiz, natija shunchalik zo‘r chiqadi</i>
 """
+
 
 main_menu_mes = """
-🏠 <b>Asosiy menyu</b>
+<b>🏠 Asosiy menyu</b>
+
+Kerakli bo‘limni tanlang 👇
 """
+
 
 waiting_mes = """
-Rasm chizilmoqda
+<b>⏳ Rasm yaratilmoqda...</b>
+<i>Iltimos, biroz kuting</i>
 """
+
 
 free_image_mes = """
-✅ Rasm tayyor
-📌 Prompt: <b>{}</b>
+<b>✅ Rasm tayyor!</b>
 
-🔁 <i>Yana chizish uchun prompt yuboring</i>
+📌 <b>Prompt:</b>
+<i>{}</i>
+
+🔁 <i>Yana rasm yaratish uchun yangi prompt yuboring</i>
 """
+
 
 saved_images_mes = """
-<b>📌{}
+<b>📂 Saqlangan rasm</b>
 
-Rasm qanchaga chizilgan:💰</b> {}so'm
-Saqlanganlar📂: {}/{}
+📌 <b>{}</b>
+
+💰 Narxi: <b>{} so‘m</b>
+
+📊 Saqlanganlar: <b>{}/{}</b>
 """
+
 
 not_saved_mes = """
-<b>Sizda hali saqlangan rasmlar yo'q🚫</b>
+<b>📭 Sizda hali saqlangan rasmlar yo‘q</b>
+
+<i>Rasm yaratib, saqlab qo‘ying 😉</i>
 """
+
 
 template_mes = """
-<b>Pullik shablonlar⤵️</b>
+<b>🧩 Pullik shablon</b>
 
-Nomi: <b>{}</b>
-Narxi: <b>{}so'm</b>💸
+📌 Nomi: <b>{}</b>  
+💰 Narxi: <b>{} so‘m</b>
 
-{}/{}
-<b>{}</b>🤖
+📊 <b>{}/{}</b>
+
+🤖 <i>{}</i>
 """
+
 
 enough_balance_mes = """
-<b>Yaxshi, shablondan foydalanish uchun rasm yuboring!</b>
+<b>✅ Zo‘r!</b>
+
+Endi rasm yuboring — shablon asosida ishlov beraman 🎨
 """
 
+
 not_enough_mes = """
-Sizning balansingizda mablag' yetarli emas❌
+<b>❌ Mablag‘ yetarli emas</b>
+
+💰 Balansingizni to‘ldiring va davom eting
+"""
+
+
+template_image_mes = """
+<b>✨ Rasm tayyor!</b>
+
+💰 Qolgan balans: <b>{} so‘m</b>
+
+📌 <b>{}</b>
 """

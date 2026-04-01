@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-FIRST_BALANCE = 2000
+FIRST_BALANCE = 10000
 
 conn = sqlite3.connect("database/bot.db", check_same_thread=False)
 conn.row_factory = sqlite3.Row

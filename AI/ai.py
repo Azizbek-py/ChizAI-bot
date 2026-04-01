@@ -5,10 +5,16 @@ import requests
 from huggingface_hub import InferenceClient
 from groq import Groq
 from settings import GROQ_TOKEN, HF_TOKEN
+from deep_translator import GoogleTranslator
 
 HF_MODEL = "stabilityai/stable-diffusion-xl-base-1.0"
-
-
+tranlator = GoogleTranslator(source="auto", target="en")
+def translate_to_en(text):
+    try:
+        return tranlator.translate(text)
+    except:
+        return text
+    
 def generate_photo(prompt: str) -> str:
     client = InferenceClient(
         provider="nscale",
@@ -16,7 +22,7 @@ def generate_photo(prompt: str) -> str:
     )
 
     img = client.text_to_image(
-        prompt=prompt,
+        prompt=translate_to_en(prompt),
         model=HF_MODEL,
     )
 
@@ -51,7 +57,7 @@ def describe_photo(filename: str, prompt: str) -> dict:
         {
             "role": "user",
             "content": [
-                {"type": "text", "text": prompt},
+                {"type": "text", "text": translate_to_en(prompt)},
                 {
                     "type": "image_url",
                     "image_url": {

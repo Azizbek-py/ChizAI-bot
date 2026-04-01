@@ -59,7 +59,9 @@ async def text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         context.user_data.setdefault("messages", []).append(update.message.message_id)
         await log_deleter(user_id=user_id, type="messages", context=context)
-        context.user_data.setdefault("messages", []).append(msg.message_id)
+        await log_deleter(user_id=user_id, type="temp", context=context)
+        await log_deleter(user_id=user_id, type="cache", context=context)
+        context.user_data.setdefault("cache", []).append(msg.message_id)
         upd(table="users", user_id=user_id, data={"stage": "start"})
 
         return
@@ -118,12 +120,13 @@ async def text(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     reply_markup=InlineKeyboardMarkup(template_but)
                 )
                 upd(table="users", user_id=user_id, data={"stage": "templates"})
+                await log_deleter(type="cache", user_id=user_id, context=context)
             except:
                 pass
 
     if stage == "waiting_prompt":
         
-        msg = await update.message.reply_text(text=waiting_mes)
+        msg = await update.message.reply_text(text=waiting_mes, parse_mode=ParseMode.HTML)
         photo = generate_photo(message) 
         await context.bot.delete_message(chat_id=user_id, message_id=msg.message_id)
         msg = await update.message.reply_photo(photo=photo, 
@@ -136,8 +139,8 @@ async def text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if stage == "waiting_another_prompt":
         uniq_id = int(user.get("uniq_id", 0))
 
-        msg = await update.message.reply_text(text=waiting_mes)
-        photo_url = await generate_photo(message)
+        msg = await update.message.reply_text(text=waiting_mes, parse_mode=ParseMode.HTML)
+        photo_url = generate_photo(message)
 
 
         await context.bot.edit_message_media(
@@ -186,7 +189,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         
         await log_deleter(user_id=user_id, type="messages", context=context)
-        context.user_data.setdefault("messages", []).append(msg.message_id)
+        await log_deleter(user_id=user_id, type="temp", context=context)
+        await log_deleter(user_id=user_id, type="cache", context=context)
+        context.user_data.setdefault("cache", []).append(msg.message_id)
         upd(table="users", user_id=user_id, data={"stage": "start"})
 
         return     
@@ -195,15 +200,19 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         saved = user.get("saved")["items"]
         file_id = query.message.photo[-1].file_id
 
-        prompt = re.search(r"(?im)^\s*📌\s*Prompt\s*:\s*(.+?)\s*$", query.message.caption)
-        prompt.group(1).strip() if prompt else ""
+        try:
+            prompt = re.search(r"(?im)^\s*📌\s*Prompt\s*:\s*(.+?)\s*$", query.message.caption)
+            prompt.group(1).strip() if prompt else ""
+            prompt = prompt.group().replace("📌 Prompt: ", "")
+        except:
+            prompt = " "
 
         try:
-            add_saved_item(user_id=user_id, file_id=file_id, prompt=prompt.group().replace("📌 Prompt: ", ""), amount=0.0)
+            add_saved_item(user_id=user_id, file_id=file_id, prompt=prompt, amount=0.0)
             await query.answer("Saqlandi✅", show_alert=True)
         except:
             pass
-
+        
     if query.data == "use":
         templates = prompt_get(table="templates")
         template = templates[index]
@@ -215,7 +224,6 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode=ParseMode.HTML
             )
             await log_deleter(type="temp", user_id=user_id, context=context)
-            log_adder(type="temp", msg_id=msg.message_id, context=context)
 
 
         if balance >= template.get("price"):
@@ -227,6 +235,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             upd(table="users", user_id=user_id, data={"stage": "photo_for_template"})
         else:
             await query.answer(text=not_enough_mes, show_alert=True)
+        await log_adder(type="temp", msg_id=msg.message_id, context=context)
 
     if "prev" in query.data or "next" in query.data:
 
@@ -309,6 +318,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if stage == "photo_for_template":
 
+        msgi = await update.message.reply_text(text=waiting_mes, parse_mode=ParseMode.HTML)
         photo_file = await update.message.photo[-1].get_file()
 
         file_path = f"AI/temp_{update.message.message_id}.jpg"
@@ -317,11 +327,23 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             result = describe_photo(
-                path=file_path,
+                filename=file_path,
                 prompt=template.get("prompt")
             )
 
-            # await update.message.reply_photo(photo=open(result, "rb"))
+            msg = await update.message.reply_photo(
+                photo=generate_photo(result['text']),
+                caption=template_image_mes.format(
+                    user.get("balance"),
+                    BOT_USERNAME
+                ),
+                parse_mode=ParseMode.HTML,
+                reply_markup=InlineKeyboardMarkup(photo_but)
+            )
+
+            await context.bot.delete_message(chat_id=user_id, message_id=msgi.message_id)
+            await log_adder(type="cache", msg_id=update.message.message_id, context=context)
+            await log_adder(type="cache", msg_id=msg.message_id, context=context)
         finally:
             if os.path.exists(file_path):
                 os.remove(file_path)
